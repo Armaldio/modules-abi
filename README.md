@@ -12,7 +12,7 @@ $ yarn add modules-abi
 ## Usage
 
 ```js
-const unicornFun = require('modules-abi');
+const abis = require('modules-abi');
 ```
 
-To view detailled informations about the API, please see the [Documentation](/DOCUMENTATION.md)
+To view detailled informations about the API, please see the [documentation](/DOCUMENTATION.md)
