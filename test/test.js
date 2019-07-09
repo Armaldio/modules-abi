@@ -1,10 +1,10 @@
 import test from 'ava';
-import abis from '../lib';
+import abis from '../src';
 import fixtures from './fixtures/fixtures';
 
 test('import does not throw', t => {
 	t.notThrows(() => {
-		require('../lib');
+		require('../src');
 	});
 });
 

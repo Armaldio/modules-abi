@@ -1,4 +1,4 @@
-const abis = require('../lib');
+const abis = require('../src');
 
 (async () => {
 	// Electron
