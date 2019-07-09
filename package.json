@@ -1,6 +1,6 @@
 {
 	"name": "modules-abi",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Get abi and version for common node runtimes (node, NW.js, Electron)",
 	"license": "MIT",
 	"repository": "armaldio/modules-abi",
