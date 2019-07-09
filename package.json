@@ -16,7 +16,8 @@
 		"test": "ava -v",
 		"watch-test": "ava -w -v",
 		"start": "node examples",
-		"doc": "jsdoc2md lib\\index.js > DOCUMENTATION.md"
+		"doc": "jsdoc2md lib\\index.js > DOCUMENTATION.md",
+		"release": "np"
 	},
 	"files": [
 		"index.js"
@@ -32,6 +33,7 @@
 		"eslint-plugin-ava": "^7.1.0",
 		"jsdoc": "^3.6.2",
 		"jsdoc-to-markdown": "^5.0.0",
+		"np": "^5.0.3",
 		"xo": "^0.24.0"
 	}
 }
