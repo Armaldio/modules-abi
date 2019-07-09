@@ -52,5 +52,5 @@ const abis = require('../lib');
 
 	console.log('\n\n');
 
-	console.log(await abis.getRuntime('4.0.0'));
+	console.log('Runtimes using versions 4.0.0:', await abis.getRuntime('4.0.0'));
 })();
