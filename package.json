@@ -1,6 +1,6 @@
 {
 	"name": "modules-abi",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
 	"main": "lib/index.js",
 	"license": "MIT",
