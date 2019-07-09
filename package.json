@@ -21,7 +21,7 @@
 		"test": "ava -v",
 		"watch-test": "ava -w -v",
 		"start": "node examples",
-		"doc": "jsdoc2md lib\\index.js > DOCUMENTATION.md",
+		"doc": "jsdoc2md src\\index.js > DOCUMENTATION.md",
 		"release": "np",
 		"prepare": "npm run doc"
 	},
