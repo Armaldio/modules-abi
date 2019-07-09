@@ -1,0 +1,6 @@
+{
+	"extends": [
+		"xo",
+		"plugin:ava/recommended"
+	]
+}
