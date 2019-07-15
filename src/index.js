@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
 const semver = require('semver');
+const https = require('https');
 
 const runtimes = [
 	{
@@ -24,7 +24,7 @@ const runtimes = [
 	},
 	{
 		name: 'nw.js',
-		url: 'https://nwjs.io/versions.json',
+		url: 'https://raw.githubusercontent.com/nwjs/website/master/src/versions.json',
 		matcher: versions => {
 			return versions.versions.map(version => ({
 				version: version.version.replace('v', ''),
@@ -34,6 +34,26 @@ const runtimes = [
 		}
 	}
 ];
+
+function fetch(url) {
+	return new Promise((resolve, reject) => {
+		https.get(url, resp => {
+			let data = '';
+
+			// A chunk of data has been recieved.
+			resp.on('data', chunk => {
+				data += chunk;
+			});
+
+			// The whole response has been received. Print out the result.
+			resp.on('end', () => {
+				resolve(JSON.parse(data));
+			});
+		}).on('error', err => {
+			reject(err);
+		});
+	});
+}
 
 /**
  * A module that help you query ABI and target version for common runtimes
@@ -49,7 +69,7 @@ module.exports = {
 	 */
 	async _getVersions(url) {
 		const res = await fetch(url);
-		const json = await res.json();
+		const json = await res;
 		return json;
 	},
 

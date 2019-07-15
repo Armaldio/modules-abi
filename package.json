@@ -4,8 +4,7 @@
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
 	"main": "src/index.js",
 	"files": [
-		"src",
-		"lib"
+		"src"
 	],
 	"license": "MIT",
 	"repository": "armaldio/modules-abi",
@@ -26,7 +25,6 @@
 	},
 	"keywords": [],
 	"dependencies": {
-		"node-fetch": "^2.6.0",
 		"semver": "^6.2.0"
 	},
 	"devDependencies": {
