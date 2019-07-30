@@ -1,6 +1,6 @@
 {
 	"name": "modules-abi",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
 	"main": "src/index.js",
 	"files": [
