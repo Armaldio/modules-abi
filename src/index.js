@@ -85,12 +85,12 @@ module.exports = {
 	},
 
 	/**
-	 * @param {String} runtime - What runtime you want to get
 	 * @param {String} version - The version you want to get the ABI
+	 * @param {String} runtime - What runtime you want to get
 	 * @return {Number} - The ABI mathcing specified version
 	 * @async
 	 */
-	async getABI(runtime, version) {
+	async getAbi(version, runtime) {
 		const matchedRuntime = this._findRuntime(runtime);
 
 		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
@@ -99,12 +99,12 @@ module.exports = {
 	},
 
 	/**
-	 * @param {String} runtime - What runtime you want to get
 	 * @param {Number} abi - The ABI you want the target version
+	 * @param {String} runtime - What runtime you want to get
 	 * @return {String} - The highest version matching specified ABI
 	 * @async
 	 */
-	async getTarget(runtime, abi) {
+	async getTarget(abi, runtime) {
 		const matchedRuntime = this._findRuntime(runtime);
 
 		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
@@ -116,13 +116,13 @@ module.exports = {
 	},
 
 	/**
-	 * @param {String} runtime - What runtime you want to get
 	 * @param {Number} abi - The ABI you want the target version
+	 * @param {String} runtime - What runtime you want to get
 	 * @param {Boolean} includeIntermediates - Wether or not to include intermediate versions
 	 * @return {Array<String>} - An array of version string that match an ABI
 	 * @async
 	 */
-	async getRange(runtime, abi, includeIntermediates = false) {
+	async getRange(abi, runtime, includeIntermediates = false) {
 		const matchedRuntime = this._findRuntime(runtime);
 
 		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
