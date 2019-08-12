@@ -1,5 +1,13 @@
 # modules-abi
 
+![](https://badgen.net/github/release/armaldio/modules-abi/stable)
+![](https://badgen.net/github/last-commit/armaldio/modules-abi)
+![](https://badgen.net/github/dependents-repo/armaldio/modules-abi/)
+![](https://badgen.net/npm/dw/modules-abi/)
+![](https://badgen.net/npm/license/modules-abi/)
+![](https://badgen.net/travis/armaldio/modules-abi/)
+![](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
+
 > Easily query abi and target versions of common desktop runtimes (electron, nw.js, node)
 
 ## Install
