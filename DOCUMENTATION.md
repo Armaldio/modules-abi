@@ -7,7 +7,7 @@ A module that help you query ABI and target version for common runtimes
 * [abis](#module_abis)
     * [.getAbi(version, runtime)](#module_abis.getAbi) ⇒ <code>Number</code>
     * [.getTarget(abi, runtime)](#module_abis.getTarget) ⇒ <code>String</code>
-    * [.getRange(abi, runtime, includeIntermediates)](#module_abis.getRange) ⇒ <code>Array.&lt;String&gt;</code>
+    * [.getRange(abi, runtime, options)](#module_abis.getRange) ⇒ <code>Array.&lt;String&gt;</code>
     * [.getAll()](#module_abis.getAll) ⇒ <code>Promise.&lt;Array&gt;</code>
     * [.getRuntime(target, raw)](#module_abis.getRuntime) ⇒ <code>Array.&lt;(Object\|String)&gt;</code>
 
@@ -35,7 +35,7 @@ A module that help you query ABI and target version for common runtimes
 
 <a name="module_abis.getRange"></a>
 
-### abis.getRange(abi, runtime, includeIntermediates) ⇒ <code>Array.&lt;String&gt;</code>
+### abis.getRange(abi, runtime, options) ⇒ <code>Array.&lt;String&gt;</code>
 **Kind**: static method of [<code>abis</code>](#module_abis)  
 **Returns**: <code>Array.&lt;String&gt;</code> - - An array of version string that match an ABI  
 
@@ -43,7 +43,7 @@ A module that help you query ABI and target version for common runtimes
 | --- | --- | --- |
 | abi | <code>Number</code> | The ABI you want the target version |
 | runtime | <code>String</code> | What runtime you want to get |
-| includeIntermediates | <code>Boolean</code> | Wether or not to include intermediate versions |
+| options | <code>Object</code> | Properties to filter results |
 
 <a name="module_abis.getAll"></a>
 
