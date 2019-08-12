@@ -6,6 +6,9 @@
 	"files": [
 		"src"
 	],
+	"bin": {
+		"modules-abi": "./lib/cli.js"
+	},
 	"license": "MIT",
 	"repository": "armaldio/modules-abi",
 	"author": {
@@ -25,6 +28,7 @@
 	},
 	"keywords": [],
 	"dependencies": {
+		"mri": "^1.1.4",
 		"semver": "^6.2.0"
 	},
 	"devDependencies": {

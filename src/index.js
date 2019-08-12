@@ -84,6 +84,18 @@ module.exports = {
 		return runtimes.find(r => r.name === runtime);
 	},
 
+	_filterBeta(elem) {
+		return !elem.includes('beta');
+	},
+
+	_filterNightly(elem) {
+		return !elem.includes('nightly');
+	},
+
+	_filterRC(elem) {
+		return !elem.includes('rc');
+	},
+
 	/**
 	 * @param {String} version - The version you want to get the ABI
 	 * @param {String} runtime - What runtime you want to get
@@ -118,11 +130,16 @@ module.exports = {
 	/**
 	 * @param {Number} abi - The ABI you want the target version
 	 * @param {String} runtime - What runtime you want to get
-	 * @param {Boolean} includeIntermediates - Wether or not to include intermediate versions
+	 * @param {Object} options - Properties to filter results
 	 * @return {Array<String>} - An array of version string that match an ABI
 	 * @async
 	 */
-	async getRange(abi, runtime, includeIntermediates = false) {
+	async getRange(abi, runtime, {
+		includeIntermediates = false,
+		includeNightly = false,
+		includeBeta = false,
+		includeReleaseCandidates = false
+	} = {}) {
 		const matchedRuntime = this._findRuntime(runtime);
 
 		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
@@ -130,7 +147,19 @@ module.exports = {
 			.filter(v => v.abi === abi)
 			.sort((a, b) => semver.compare(a.version, b.version));
 
-		const mapped = found.map(f => f.version);
+		let mapped = found.map(f => f.version);
+
+		if (!includeBeta) {
+			mapped = mapped.filter(this._filterBeta);
+		}
+
+		if (!includeNightly) {
+			mapped = mapped.filter(this._filterNightly);
+		}
+
+		if (!includeReleaseCandidates) {
+			mapped = mapped.filter(this._filterRC);
+		}
 
 		if (includeIntermediates) {
 			return mapped;
