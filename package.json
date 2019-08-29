@@ -4,7 +4,11 @@
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
 	"main": "src/index.js",
 	"files": [
-		"src"
+		"src",
+		"lib",
+		"examples",
+		"DOCUMENTATION.md",
+		"README.md"
 	],
 	"bin": {
 		"modules-abi": "./lib/cli.js"
