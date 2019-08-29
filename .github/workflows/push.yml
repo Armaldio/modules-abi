@@ -1,0 +1,17 @@
+on: [push, pull_request]
+name: Test
+jobs:
+  build:
+    name: GitHub Action for npm
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-latest, windows-latest, ubuntu-latest]
+        node: [6, 8, 10, 12]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm install
+    - run: npm test
