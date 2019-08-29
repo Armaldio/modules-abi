@@ -7,6 +7,7 @@
 ![](https://badgen.net/npm/license/modules-abi/)
 ![](https://badgen.net/travis/armaldio/modules-abi/)
 ![](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
+![](https://github.com/Armaldio/modules-abi/workflows/Test/badge.svg)
 
 > Easily query abi and target versions of common desktop runtimes (electron, nw.js, node)
 
