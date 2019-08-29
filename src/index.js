@@ -192,7 +192,7 @@ module.exports = {
 	/**
 	 * Return all the runtimes associated with a version
 	 * @param {String} target - The desired target
-	 * @param {Boolean} raw - Return a version object containing al infos about the version instead of just the runtime
+	 * @param {Boolean} raw - Return a version object containing all infos about the version instead of just the runtime
 	 * @return {Array<Object|String>} - All the runtimes associated with the version
 	 * @async
 	 */
