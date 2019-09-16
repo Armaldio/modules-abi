@@ -29,7 +29,7 @@ const runtimes = [
 			return versions.versions.map(version => ({
 				version: version.version.replace('v', ''),
 				abi: (version.components &&
-									version.components.chromium) ? parseInt(semver.major(semver.coerce(version.components.chromium)), 10) : 0
+					version.components.chromium) ? parseInt(semver.major(semver.coerce(version.components.chromium)), 10) : 0
 			}));
 		}
 	}
@@ -40,7 +40,7 @@ function fetch(url) {
 		https.get(url, resp => {
 			let data = '';
 
-			// A chunk of data has been recieved.
+			// A chunk of data has been received.
 			resp.on('data', chunk => {
 				data += chunk;
 			});
@@ -84,15 +84,30 @@ module.exports = {
 		return runtimes.find(r => r.name === runtime);
 	},
 
-	_filterBeta(elem) {
+	_filterBeta(_elem) {
+		let elem = _elem;
+		if (_elem.version) {
+			elem = _elem.version;
+		}
+
 		return !elem.includes('beta');
 	},
 
-	_filterNightly(elem) {
+	_filterNightly(_elem) {
+		let elem = _elem;
+		if (_elem.version) {
+			elem = _elem.version;
+		}
+
 		return !elem.includes('nightly');
 	},
 
-	_filterRC(elem) {
+	_filterRC(_elem) {
+		let elem = _elem;
+		if (_elem.version) {
+			elem = _elem.version;
+		}
+
 		return !elem.includes('rc');
 	},
 
@@ -174,8 +189,8 @@ module.exports = {
 	 * @async
 	 * todo support whitelist / ignore runtime
 	 */
-	async getAll() {
-		const versions = [];
+	async getAll({includeNightly = false, includeBeta = false, includeReleaseCandidates = false} = {}) {
+		let versions = [];
 		for (let runtime of runtimes) {
 			const matchedRuntime = this._findRuntime(runtime.name);
 
@@ -184,6 +199,18 @@ module.exports = {
 			// eslint-disable-next-line
 			vs.forEach(e => e.runtime = runtime.name);
 			versions.push(...vs);
+		}
+
+		if (!includeBeta) {
+			versions = versions.filter(this._filterBeta);
+		}
+
+		if (!includeNightly) {
+			versions = versions.filter(this._filterNightly);
+		}
+
+		if (!includeReleaseCandidates) {
+			versions = versions.filter(this._filterRC);
 		}
 
 		return versions;

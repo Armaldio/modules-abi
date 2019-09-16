@@ -59,3 +59,20 @@ test('check node-abi vs modules-abi - v50 - electron', async t => {
 	const _50_electronMA = await abis.getTarget(50, 'electron');
 	t.deepEqual(parseInt(_50_electron), parseInt(_50_electronMA));
 });
+
+test('check getAll', async t => {
+	let all = await abis.getAll();
+	all = all.filter(el => el.runtime === 'electron');
+	all = all.filter(el => el.abi === 64);
+	t.deepEqual(all.length, 35);
+});
+
+test('check getAll including beta', async t => {
+	let all = await abis.getAll({
+		includeBeta: true,
+		includeNightly: true,
+	});
+	all = all.filter(el => el.runtime === 'electron');
+	all = all.filter(el => el.abi === 64);
+	t.deepEqual(all.length, 74);
+});
