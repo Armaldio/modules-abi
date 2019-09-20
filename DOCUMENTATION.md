@@ -1,3 +1,18 @@
+## Modules
+
+<dl>
+<dt><a href="#module_abis">abis</a></dt>
+<dd><p>A module that help you query ABI and target version for common runtimes</p>
+</dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#Filters">Filters</a></dt>
+<dd></dd>
+</dl>
+
 <a name="module_abis"></a>
 
 ## abis
@@ -43,7 +58,7 @@ A module that help you query ABI and target version for common runtimes
 | --- | --- | --- |
 | abi | <code>Number</code> | The ABI you want the target version |
 | runtime | <code>String</code> | What runtime you want to get |
-| options | <code>Object</code> | Properties to filter results |
+| options | [<code>Filters</code>](#Filters) | Properties to filter results |
 
 <a name="module_abis.getAll"></a>
 
@@ -52,6 +67,11 @@ Get all versions of all runtimes availables
 
 **Kind**: static method of [<code>abis</code>](#module_abis)  
 **Returns**: <code>Promise.&lt;Array&gt;</code> - - An array of all the versions availaables  
+
+| Type | Description |
+| --- | --- |
+| [<code>Filters</code>](#Filters) | Filtering options |
+
 <a name="module_abis.getRuntime"></a>
 
 ### abis.getRuntime(target, raw) ⇒ <code>Array.&lt;(Object\|String)&gt;</code>
@@ -63,5 +83,17 @@ Return all the runtimes associated with a version
 | Param | Type | Description |
 | --- | --- | --- |
 | target | <code>String</code> | The desired target |
-| raw | <code>Boolean</code> | Return a version object containing al infos about the version instead of just the runtime |
+| raw | <code>Boolean</code> | Return a version object containing all infos about the version instead of just the runtime |
+
+<a name="Filters"></a>
+
+## Filters
+**Kind**: global typedef  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| includeNightly | <code>Boolean</code> | <code>false</code> | Wether to include Nightly inside the list |
+| includeBeta | <code>Boolean</code> | <code>false</code> | Wether to include Beta inside the list |
+| includeReleaseCandidates | <code>Boolean</code> | <code>false</code> | Wether to include Release Candidates inside the list |
+| includeIntermediates | <code>Boolean</code> | <code>false</code> | Wether to include intermediate versions (only valid for the "range" method) |
 

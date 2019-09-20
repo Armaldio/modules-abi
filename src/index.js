@@ -145,7 +145,7 @@ module.exports = {
 	/**
 	 * @param {Number} abi - The ABI you want the target version
 	 * @param {String} runtime - What runtime you want to get
-	 * @param {Object} options - Properties to filter results
+	 * @param {Filters} options - Properties to filter results
 	 * @return {Array<String>} - An array of version string that match an ABI
 	 * @async
 	 */
@@ -186,6 +186,7 @@ module.exports = {
 	/**
 	 * Get all versions of all runtimes availables
 	 * @return {Promise<Array>} - An array of all the versions availaables
+	 * @param {Filters} - Filtering options
 	 * @async
 	 * todo support whitelist / ignore runtime
 	 */
@@ -234,3 +235,11 @@ module.exports = {
 	},
 	runtimes
 };
+
+/**
+@typedef Filters
+ @param {Boolean} includeNightly=false - Wether to include Nightly inside the list
+ @param {Boolean} includeBeta=false - Wether to include Beta inside the list
+ @param {Boolean} includeReleaseCandidates=false - Wether to include Release Candidates inside the list
+ @param {Boolean} includeIntermediates=false - Wether to include intermediate versions (only valid for the "range" method)
+ */
