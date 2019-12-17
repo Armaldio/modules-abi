@@ -33,7 +33,7 @@
 	"keywords": [],
 	"dependencies": {
 		"mri": "^1.1.4",
-		"semver": "^6.2.0"
+		"semver": "^7.1.0"
 	},
 	"devDependencies": {
 		"ava": "^2.1.0",
