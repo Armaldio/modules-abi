@@ -42,7 +42,7 @@
 		"eslint-plugin-ava": "^9.0.0",
 		"jsdoc-to-markdown": "^5.0.0",
 		"node-abi": "^2.9.0",
-		"np": "^5.0.3",
+		"np": "^7.2.0",
 		"xo": "^0.25.3"
 	}
 }
