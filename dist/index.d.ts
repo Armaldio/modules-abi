@@ -1,40 +1,6 @@
 const semver = require('semver');
 const https = require('https');
 
-const runtimes = [
-	{
-		name: 'electron',
-		url: 'https://raw.githubusercontent.com/electron/releases/master/lite.json',
-		matcher: versions => {
-			return versions.map(version => ({
-				version: version.version,
-				abi: version.deps ? parseInt(version.deps.modules, 10) : 0
-			}));
-		}
-	},
-	{
-		name: 'node',
-		url: 'https://nodejs.org/dist/index.json',
-		matcher: versions => {
-			return versions.map(version => ({
-				version: version.version.replace('v', ''),
-				abi: parseInt(version.modules, 10)
-			}));
-		}
-	},
-	{
-		name: 'nw.js',
-		url: 'https://raw.githubusercontent.com/nwjs/website/master/src/versions.json',
-		matcher: versions => {
-			return versions.versions.map(version => ({
-				version: version.version.replace('v', ''),
-				abi: (version.components &&
-					version.components.chromium) ? parseInt(semver.major(semver.coerce(version.components.chromium)), 10) : 0
-			}));
-		}
-	}
-];
-
 function fetch(url) {
 	return new Promise((resolve, reject) => {
 		https.get(url, resp => {
@@ -60,16 +26,71 @@ function fetch(url) {
  * @module abis
  */
 module.exports = {
+	runtimes: [
+		{
+			name: 'electron',
+			url: 'https://raw.githubusercontent.com/electron/releases/master/lite.json',
+			cache: null,
+			matcher: versions => {
+				return versions.map(version => ({
+					version: version.version,
+					abi: version.deps ? parseInt(version.deps.modules, 10) : 0
+				}));
+			}
+		},
+		{
+			name: 'node',
+			url: 'https://nodejs.org/dist/index.json',
+			cache: null,
+			matcher: versions => {
+				return versions.map(version => ({
+					version: version.version.replace('v', ''),
+					abi: parseInt(version.modules, 10)
+				}));
+			}
+		},
+		{
+			name: 'nw.js',
+			url: 'https://raw.githubusercontent.com/nwjs/website/master/src/versions.json',
+			cache: null,
+			matcher: async versions => {
+				const finalVersions = [];
+
+				for (const version of versions.versions) {
+					const nodeVersion = version.components.node;
+
+					// eslint-disable-next-line no-await-in-loop
+					const nodeAbi = await module.exports.getAbi(nodeVersion, 'node');
+
+					if (nodeAbi) {
+						const val = {
+							version: version.version.replace('v', ''),
+							abi: nodeAbi
+						};
+
+						finalVersions.push(val);
+					}
+				}
+
+				return finalVersions;
+			}
+		}
+	],
 	/**
 	 * Get versions for remtote URL
-	 * @param {String} url - Url to fetch to get the releases
+	 * @param {Object} runtime - Runtime
 	 * @return {JSON} - The list of releases for the runtime
 	 * @async
 	 * @private
 	 */
-	async _getVersions(url) {
-		const res = await fetch(url);
+	async _getVersions(runtime) {
+		if (runtime.cache) {
+			return runtime.cache;
+		}
+
+		const res = await fetch(runtime.url);
 		const json = await res;
+		runtime.cache = json;
 		return json;
 	},
 
@@ -81,7 +102,7 @@ module.exports = {
 	 * @return { Object } - An enhanced representation of the runtime
 	 */
 	_findRuntime(runtime) {
-		return runtimes.find(r => r.name === runtime);
+		return this.runtimes.find(r => r.name === runtime);
 	},
 
 	_filterBeta(_elem) {
@@ -120,9 +141,12 @@ module.exports = {
 	async getAbi(version, runtime) {
 		const matchedRuntime = this._findRuntime(runtime);
 
-		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
+		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime));
 		const found = versions.find(v => v.version === version);
-		return found.abi;
+
+		if (found) {
+			return found.abi;
+		}
 	},
 
 	/**
@@ -134,7 +158,7 @@ module.exports = {
 	async getTarget(abi, runtime) {
 		const matchedRuntime = this._findRuntime(runtime);
 
-		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
+		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime));
 		const found = versions
 			.filter(v => v.abi === abi)
 			.sort((a, b) => semver.compare(b.version, a.version));
@@ -157,7 +181,7 @@ module.exports = {
 	} = {}) {
 		const matchedRuntime = this._findRuntime(runtime);
 
-		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
+		const versions = await matchedRuntime.matcher(await this._getVersions(matchedRuntime));
 		const found = versions
 			.filter(v => v.abi === abi)
 			.sort((a, b) => semver.compare(a.version, b.version));
@@ -192,11 +216,11 @@ module.exports = {
 	 */
 	async getAll({includeNightly = false, includeBeta = false, includeReleaseCandidates = false} = {}) {
 		let versions = [];
-		for (let runtime of runtimes) {
+		for (let runtime of this.runtimes) {
 			const matchedRuntime = this._findRuntime(runtime.name);
 
 			// eslint-disable-next-line
-			const vs = await matchedRuntime.matcher(await this._getVersions(matchedRuntime.url));
+			const vs = await matchedRuntime.matcher(await this._getVersions(matchedRuntime));
 			// eslint-disable-next-line
 			vs.forEach(e => e.runtime = runtime.name);
 			versions.push(...vs);
@@ -232,8 +256,7 @@ module.exports = {
 		}
 
 		return versions.filter(v => v.version === target).map(v => v.runtime);
-	},
-	runtimes
+	}
 };
 
 /**

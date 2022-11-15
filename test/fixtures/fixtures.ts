@@ -1,4 +1,4 @@
-module.exports = {
+const fixtures = {
 	'nw.js': {
 		abisCheck: [
 			['0.28.3', 64],
@@ -12,6 +12,10 @@ module.exports = {
 			[70, '0.34.5']
 		],
 		rangeCheck: [
+			[108, [
+				'0.64.1',
+				'0.69.1'
+			]],
 			[70, [
 				'0.34.0',
 				'0.34.5'
@@ -60,4 +64,6 @@ module.exports = {
 		],
 		rangeCheck: []
 	}
-};
+} as const
+
+export default fixtures;

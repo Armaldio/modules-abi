@@ -4,8 +4,8 @@
 // TODO Better error handling
 // TODO Add test cases for error handling
 
-const abis = require('../src');
-const mri = require('mri');
+import abis from '.';
+import mri from 'mri';
 
 const argv = process.argv.slice(2);
 
@@ -15,13 +15,13 @@ modules-abi [options]
 
 Options:
 	--mode=[range, abi, target, runtime, all] : Select which mode to use
-	--runtime=[electron, nw.js, node]         : Select which engine to use 
+	--runtime=[electron, nw.js, node]         : Select which engine to use
 	--abi=[Number]                            : Select the targeted abi
 	--target=[Semver String]                  : Selected the targeted runtime version
 	--include-intermediates                   : Whether to include intermediates version in "range" mode
 	--include-nightly                         : Whether to include nighly versions
 	--include-beta                            : Whether to include beta versions
-	
+
 - "range" mode must include "abi" and "runtime"
 - "abi" mode must include "target" and "runtime"
 - "target" mode must include "abi" and "runtime"
