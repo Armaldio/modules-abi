@@ -1,9 +1,0 @@
-{
-	"extends": [
-		"xo",
-		"plugin:ava/recommended"
-	],
-	"rules": {
-		"no-case-declarations": "warn"
-	}
-}

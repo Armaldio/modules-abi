@@ -2,47 +2,55 @@
 	"name": "modules-abi",
 	"version": "0.3.4",
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
-	"main": "src/index.js",
+	"main": "dist/src/index.js",
+	"type": "module",
 	"files": [
-		"src",
-		"lib",
-		"examples",
-		"DOCUMENTATION.md",
-		"README.md"
+		"dist"
 	],
 	"bin": {
-		"modules-abi": "./lib/cli.js"
+		"modules-abi": "dist/bin/index.js"
 	},
+	"packageManager": "pnpm@7.16.0",
 	"license": "MIT",
-	"repository": "armaldio/modules-abi",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/armaldio/modules-abi.git"
+	},
 	"author": {
 		"name": "Quentin Goinaud",
 		"email": "armaldio@gmail.com",
 		"url": "https://armaldio.xyz"
 	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=16"
 	},
 	"scripts": {
-		"test": "ava -v",
-		"watch-test": "ava -w -v",
-		"start": "node examples",
-		"doc": "jsdoc2md src\\index.js > DOCUMENTATION.md",
-		"release": "np"
+		"test": "uvu -r tsm test",
+		"watch-test": "uvu -w -r tsm test",
+		"start": "tsm examples/index.ts",
+		"doc": "tsdoc",
+		"release": "np",
+		"build": "tsup --entry src/index.ts --entry bin/index.ts --target es2020 --format esm,cjs --dts --sourcemap --minify --shims",
+		"watch": "tsup --entry src/index.ts --entry bin/index.ts --target es2020 --format esm,cjs --dts --sourcemap --watch --shims"
 	},
 	"keywords": [],
 	"dependencies": {
-		"mri": "^1.1.4",
-		"semver": "^7.1.1"
+		"@types/node": "^18.11.9",
+		"@types/semver": "^7.3.13",
+		"is-online": "^10.0.0",
+		"mri": "^1.2.0",
+		"semver": "^7.3.8"
 	},
 	"devDependencies": {
-		"ava": "^2.1.0",
-		"browserify": "^16.3.0",
-		"eslint-config-xo": "^0.27.2",
-		"eslint-plugin-ava": "^9.0.0",
-		"jsdoc-to-markdown": "^5.0.0",
-		"node-abi": "^2.9.0",
-		"np": "^5.0.3",
-		"xo": "^0.25.3"
+		"@typescript-eslint/eslint-plugin": "^5.43.0",
+		"@typescript-eslint/parser": "^5.43.0",
+		"eslint": "^8.27.0",
+		"node-abi": "^3.28.0",
+		"np": "^7.6.2",
+		"tsm": "^2.2.2",
+		"tsup": "^6.5.0",
+		"typedoc": "^0.23.21",
+		"typescript": "^4.9.3",
+		"uvu": "^0.5.6"
 	}
 }
