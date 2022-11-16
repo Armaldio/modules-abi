@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        node: ['14.X', '16.X', '18.X']
+        node: ['16.X', '18.X', '20.X']
     steps:
       - uses: actions/checkout@v3
 
@@ -24,6 +24,7 @@ jobs:
       - run: pnpm test
 
   build:
+    needs: test
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -91,8 +92,10 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v2
+
+      - run: ls
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
