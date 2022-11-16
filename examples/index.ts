@@ -1,4 +1,4 @@
-import { getAbi, getRange, getRuntime, getTarget } from '../src';
+import { getAbi, getRange, getRuntime, getTarget } from '../src/index';
 
 (async () => {
 	// Electron
@@ -24,8 +24,8 @@ import { getAbi, getRange, getRuntime, getTarget } from '../src';
 		const abi = await getAbi('0.39.2', 'nw.js');
 		console.log('ABI for version 0.39.2: ' + abi);
 
-		const version = await getTarget(70, 'nw.js');
-		console.log('Version for ABI 70: ' + version);
+		const version = await getTarget(72, 'nw.js');
+		console.log('Version for ABI 72: ' + version);
 
 		const range = await getRange(57, 'nw.js');
 		console.log('Range of versions for ABI 57: ', range.join(', '));
@@ -52,5 +52,5 @@ import { getAbi, getRange, getRuntime, getTarget } from '../src';
 
 	console.log('\n\n');
 
-	console.log('Runtimes using versions 4.0.0:', await getRuntime('4.0.0'));
+	console.log('Runtimes using versions 4.0.0:', await getRuntime('4.0.0', false));
 })();

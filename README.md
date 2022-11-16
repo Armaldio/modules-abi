@@ -5,10 +5,8 @@
 ![](https://badgen.net/github/dependents-repo/armaldio/modules-abi/)
 ![](https://badgen.net/npm/dw/modules-abi/)
 ![](https://badgen.net/npm/license/modules-abi/)
-![](https://badgen.net/travis/armaldio/modules-abi/)
-![](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
+![](https://badgen.net/github/dependabot/armaldio/modules-abi)
 ![](https://github.com/Armaldio/modules-abi/workflows/Test/badge.svg)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Armaldio/modules-abi)
 
 > Easily query abi and target versions of common desktop runtimes (electron, nw.js, node)
 
@@ -17,6 +15,7 @@
 ```
 $ npm install modules-abi
 $ yarn add modules-abi
+$ pnpm add modules-abi
 ```
 
 ## Usage

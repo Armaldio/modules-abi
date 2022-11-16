@@ -1,5 +1,8 @@
 import semver from 'semver';
 import https from 'https';
+import isOnlineCheck from 'is-online';
+import { writeFile, readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 
 function fetch(url: string) {
 	return new Promise((resolve, reject) => {
@@ -32,6 +35,8 @@ type Filters = {
 	includeIntermediates?: boolean
 }
 
+// const tempPath = (name: string) => join(__dirname, `temp-${name}.json`)
+
 abstract class RuntimeBase<T> {
 	abstract name: 'node' | 'nw.js' | 'electron'
 	abstract url: string
@@ -43,10 +48,22 @@ abstract class RuntimeBase<T> {
 			return this.cache;
 		}
 
-		const res = await fetch(this.url);
-		const json = (await res) as NonNullable<this['cache']>;
-		this.cache = json;
-		return json;
+		const isOnline = await isOnlineCheck()
+
+		if (isOnline) {
+			const res = await fetch(this.url);
+			const json = (await res) as NonNullable<this['cache']>;
+			// await writeFile(tempPath(this.name), JSON.stringify(json), 'utf-8')
+			this.cache = json;
+			return json;
+		} else {
+			// const jsonRAW = await readFile(tempPath(this.name), 'utf-8')
+			// const json = JSON.parse(jsonRAW) as NonNullable<this['cache']>
+
+			// this.cache = json;
+			// return json;
+			throw new Error("Internet connection unavailable. Please try again later");
+		}
 	}
 }
 
@@ -119,16 +136,20 @@ class NWJSRuntime extends RuntimeBase<NWJSJSON> {
 		for (const version of versions.versions) {
 			const nodeVersion = version.components.node;
 
-			// eslint-disable-next-line no-await-in-loop
-			const nodeAbi = await getAbi(nodeVersion, 'node');
+			try {
+				// eslint-disable-next-line no-await-in-loop
+				const nodeAbi = await getAbi(nodeVersion, 'node');
 
-			if (nodeAbi) {
-				const val: Version = {
-					version: version.version.replace('v', ''),
-					abi: nodeAbi
-				};
+				if (nodeAbi) {
+					const val: Version = {
+						version: version.version.replace('v', ''),
+						abi: nodeAbi
+					};
 
-				finalVersions.push(val);
+					finalVersions.push(val);
+				}
+			} catch (e) {
+				// console.error('aaaa')
 			}
 		}
 
@@ -156,10 +177,12 @@ class NodeRuntime extends RuntimeBase<NodeJSON> {
 	url = 'https://nodejs.org/dist/index.json'
 	async matcher() {
 		const versions = await this.getVersions()
-		return versions.map(version => ({
-			version: version.version.replace('v', ''),
-			abi: parseInt(version.modules ?? '0', 10)
-		}));
+		return versions.map(version => {
+			return ({
+				version: version.version.replace('v', ''),
+				abi: parseInt(version.modules ?? '0', 10)
+			});
+		});
 	}
 
 }
@@ -194,7 +217,6 @@ const _filterRC = (elem: Version) => {
 }
 
 export const getAbi = async (version: string, runtime: Runtime['name']): Promise<number> => {
-	console.log('looking for version', version, 'of', runtime)
 	const matchedRuntime = _findRuntime(runtime);
 
 	if (!matchedRuntime) {
@@ -203,15 +225,14 @@ export const getAbi = async (version: string, runtime: Runtime['name']): Promise
 
 	const versions = await matchedRuntime.matcher();
 	const found = versions.find(v => v.version === version);
-	console.log('found', found)
 
 	if (found) {
 		return found.abi;
 	}
-	throw new Error('Version not found')
+	throw new Error(`Version ${runtime}@${version} not found`)
 }
 
-export const getTarget = async (abi: number, runtime: Runtime['name']): Promise<string> => {
+export const getTarget = async (abi: number, runtime: Runtime['name']) => {
 	const matchedRuntime = _findRuntime(runtime);
 
 	if (!matchedRuntime) {
@@ -223,14 +244,19 @@ export const getTarget = async (abi: number, runtime: Runtime['name']): Promise<
 		.filter(v => v.abi === abi)
 		.sort((a, b) => semver.compare(b.version, a.version));
 
-	return found[0].version;
+	const firstElement = found[0]
+
+	if (firstElement) {
+		return found[0].version;
+	}
+	throw new Error('Target not found')
 }
 
 export const getRange = async (
 	abi: number,
 	runtime: Runtime['name'],
 	filters?: Filters
-): Promise<Array<string>> => {
+) => {
 	const {
 		includeNightly = false,
 		includeBeta = false,
@@ -265,7 +291,17 @@ export const getRange = async (
 		return found.map(x => x.version);
 	}
 
-	return [found[0].version, found[found.length - 1].version];
+	if (found.length === 0) {
+		throw new Error('Range not found')
+	}
+
+	const firstElement = found[0]
+	const lastElement = found[found.length - 1]
+
+	if (firstElement && lastElement) {
+		return [firstElement.version, lastElement.version];
+	}
+	throw new Error('Range not found')
 }
 
 type FinalVersions = (Version & { runtime: Runtime['name'] })[]
