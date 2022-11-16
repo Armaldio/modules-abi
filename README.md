@@ -21,7 +21,7 @@ $ pnpm add modules-abi
 ## Usage
 
 ```js
-const abis = require('modules-abi');
+import { getAbi, getRange, getRuntime, getTarget } from 'modules-abi';
 ```
 
 To view detailled informations about the API, please see the [documentation](/DOCUMENTATION.md)

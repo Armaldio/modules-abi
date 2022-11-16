@@ -4,7 +4,7 @@
 // TODO Better error handling
 // TODO Add test cases for error handling
 
-import abis from '.';
+import { getRange, getTarget, getAbi, getRuntime, getAll } from '../src';
 import mri from 'mri';
 
 const argv = process.argv.slice(2);
@@ -43,26 +43,26 @@ const args = mri(argv, {boolean: ['include-intermediates', 'include-rc', 'includ
 	switch (args.mode) {
 		case 'range':
 			// Ex: modules-abi --mode="range" --abi=73 --runtime="electron" --include-intermediates
-			const _ranges = await abis.getRange(abi, runtime, {includeIntermediates, includeNightly, includeBeta, includeReleaseCandidates});
+			const _ranges = await getRange(abi, runtime, {includeIntermediates, includeNightly, includeBeta, includeReleaseCandidates});
 			console.log(_ranges.join('\n'));
 			break;
 		case 'abi':
 			// Ex: modules-abi --mode=abi --target=7.0.0-nightly.20190615 --runtime=electron
-			const _abi = await abis.getAbi(target, runtime);
+			const _abi = await getAbi(target, runtime);
 			console.log(_abi);
 			break;
 		case 'target':
 			// Ex: modules-abi --mode=target --abi=73 --runtime=electron
-			const _target = await abis.getTarget(abi, runtime);
+			const _target = await getTarget(abi, runtime);
 			console.log(_target);
 			break;
 		case 'runtime':
 			// Ex: modules-abi --mode=runtime --target=4.0.4
-			const _runtime = await abis.getRuntime(target);
+			const _runtime = await getRuntime(target, false);
 			console.log(_runtime.join(', '));
 			break;
 		case 'all':
-			const _all = await abis.getAll({includeIntermediates, includeNightly, includeBeta, includeReleaseCandidates});
+			const _all = await getAll({includeIntermediates, includeNightly, includeBeta, includeReleaseCandidates});
 			console.log(_all.map(v => `${v.runtime} - v${v.abi} - ${v.version}`).join('\n'));
 			break;
 		default:
