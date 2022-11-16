@@ -1,6 +1,6 @@
 {
 	"name": "modules-abi",
-	"version": "0.3.4",
+	"version": "1.0.0-1",
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
 	"main": "dist/src/index.js",
 	"type": "module",
@@ -28,7 +28,7 @@
 		"test": "uvu -r tsm test",
 		"watch-test": "uvu -w -r tsm test",
 		"start": "tsm examples/index.ts",
-		"doc": "tsdoc",
+		"doc": "typedoc src/index.ts",
 		"release": "np",
 		"build": "tsup --entry src/index.ts --entry bin/index.ts --target es2020 --format esm,cjs --dts --sourcemap --minify --shims",
 		"watch": "tsup --entry src/index.ts --entry bin/index.ts --target es2020 --format esm,cjs --dts --sourcemap --watch --shims"

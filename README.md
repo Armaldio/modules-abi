@@ -24,7 +24,7 @@ $ pnpm add modules-abi
 import { getAbi, getRange, getRuntime, getTarget } from 'modules-abi';
 ```
 
-To view detailled informations about the API, please see the [documentation](/DOCUMENTATION.md)
+To view detailled informations about the API, please see the [documentation](https://armaldio.github.io/modules-abi/)
 
 ## Comparison to node-abi
 `node-abi` is:
