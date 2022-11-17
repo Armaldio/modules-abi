@@ -2,11 +2,22 @@
 	"name": "modules-abi",
 	"version": "1.0.0",
 	"description": "Get ABI and version for common node runtimes (node, NW.js, Electron)",
-	"main": "dist/src/index.js",
+	"main": "dist/src/index.cjs",
 	"type": "module",
+	"types": "dist/src/index.d.ts",
 	"files": [
 		"dist"
 	],
+	"exports": {
+		".": {
+			"import": {
+				"default": "./dist/src/index.js"
+			},
+			"require": {
+				"default": "./dist/src/index.cjs"
+			}
+		}
+	},
 	"bin": {
 		"modules-abi": "dist/bin/index.js"
 	},
@@ -22,7 +33,7 @@
 		"url": "https://armaldio.xyz"
 	},
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"test": "uvu -r tsm test",
@@ -35,16 +46,17 @@
 	},
 	"keywords": [],
 	"dependencies": {
-		"@types/node": "^18.11.9",
-		"@types/semver": "^7.3.13",
 		"is-online": "^10.0.0",
 		"mri": "^1.2.0",
 		"semver": "^7.3.8"
 	},
 	"devDependencies": {
+		"@types/node": "^18.11.9",
+		"@types/semver": "^7.3.13",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
 		"eslint": "^8.27.0",
+		"eslint-plugin-compat": "^4.0.2",
 		"node-abi": "^3.28.0",
 		"np": "^7.6.2",
 		"tsm": "^2.2.2",

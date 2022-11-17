@@ -1,28 +1,5 @@
 import semver from 'semver';
-import https from 'https';
 import isOnlineCheck from 'is-online';
-import { writeFile, readFile } from 'node:fs/promises'
-import { join } from 'node:path'
-
-function fetch(url: string) {
-	return new Promise((resolve, reject) => {
-		https.get(url, resp => {
-			let data = '';
-
-			// A chunk of data has been received.
-			resp.on('data', chunk => {
-				data += chunk;
-			});
-
-			// The whole response has been received. Print out the result.
-			resp.on('end', () => {
-				resolve(JSON.parse(data));
-			});
-		}).on('error', err => {
-			reject(err);
-		});
-	});
-}
 
 type Filters = {
 	// Wether to include Nightly inside the list
@@ -51,7 +28,8 @@ abstract class RuntimeBase<T> {
 		const isOnline = await isOnlineCheck()
 
 		if (isOnline) {
-			const res = await fetch(this.url);
+			const resRAW = await fetch(this.url);
+			const res = await resRAW.json()
 			const json = (await res) as NonNullable<this['cache']>;
 			// await writeFile(tempPath(this.name), JSON.stringify(json), 'utf-8')
 			this.cache = json;
