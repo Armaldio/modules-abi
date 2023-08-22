@@ -46,38 +46,29 @@ abstract class RuntimeBase<T> {
 }
 
 export interface ElectronJSONItem {
-	node_id: string
-	tag_name: string
-	name: string
-	prerelease: boolean
-	published_at: string
 	version: string
-	npm_package_name?: string
-	deps?: {
-		node: string
-		apm?: string
-		v8: string
-		uv: string
-		zlib: string
-		openssl: string
-		modules: string
-		chrome: string
-	}
-	npm_dist_tags: string[]
-	total_downloads: number
+	date: string
+	node: string
+	v8: string
+	uv: string
+	zlib: string
+	openssl: string
+	modules: string
+	chrome: string
+	files: string[]
 }
 
 type ElectronJSON = ElectronJSONItem[]
 class ElectronRuntime extends RuntimeBase<ElectronJSON> {
 	name: RuntimeBase<any>['name'] = 'electron'
-	url = 'https://raw.githubusercontent.com/electron/releases/master/lite.json'
+	url = 'https://releases.electronjs.org/releases.json'
 	async matcher() {
 		const versions = await this.getVersions()
 
 		const result = versions.map(version => {
 			const v: Version = {
 				version: version.version,
-				abi: version.deps ? parseInt(version.deps.modules, 10) : 0
+				abi: version.modules ? parseInt(version.modules, 10) : 0
 			}
 			return v;
 		});
